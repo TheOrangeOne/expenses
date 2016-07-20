@@ -19,6 +19,6 @@
 
 ; start serving:
 (serve/servlet expenses-servlet
-               #:servlet-path "/")
+               #:servlet-path "/"
                ;#:extra-files-paths (list (build-path "frontend/") ))
-               ;#:extra-files-paths (list (build-path root)))
+               #:extra-files-paths (list (build-path root)))
