@@ -2,7 +2,9 @@
   "name": "expenses",
   "version": "1.0.0",
   "description": "manage your expenses",
-  "scripts": {},
+  "scripts": {
+    "postinstall": "tsd install"
+  },
   "engines": {
     "node": ">=4.x"
   },
