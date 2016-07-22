@@ -1,12 +1,25 @@
-import * as React from "react";
-import ExpensesApp from "./expenses";
+import * as React from "react"
+import ExpensesApp from "./expenses"
 
-export interface AppProps { compiler: string; framework: string; }
-
-export class App extends React.Component<AppProps, {}> {
+export class App extends React.Component<any, {}> {
   render() {
+    let user = {
+      name: "kyle",
+      transactions: [
+        {
+          amount: -11.52,
+          from: { name: "kyle" },
+          to: { name: "burrito place" },
+          category: "food",
+          about: "got a tasty beef burrito"
+        }
+      ]
+    }
+
     return (
-      <ExpensesApp/>
+      <main id="home">
+        <ExpensesApp user={user}/>
+      </main>
     );
   }
 }
