@@ -9,8 +9,7 @@
   },
   "files": [
     "./typings/index.d.ts",
-    "./public/js/components/app.tsx",
-    "./public/js/components/expenses.tsx",
+    "./public/js/views/app.tsx",
     "./public/js/index.tsx"
   ]
 }

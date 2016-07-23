@@ -17,16 +17,15 @@ export default class TransactionCard extends React.Component<TransactionCardProp
     })
 
     return (
-      <div>
       <article className="card">
         <header>
           <h3>
             <span className={moneyClass}>
               {"$" + Math.abs(transaction.amount) + " "}
             </span>
-            ({transaction.from.name + " "}
+            {transaction.from.name + " "}
             <FontIcon class="fa-long-arrow-right"/>
-            {" " + transaction.to.name})
+            {" " + transaction.to.name}
           </h3>
           <span className="label" style={{float: "right"}}>
             {transaction.category}
@@ -36,7 +35,6 @@ export default class TransactionCard extends React.Component<TransactionCardProp
         <footer>
         </footer>
       </article>
-      </div>
     )
   }
 }

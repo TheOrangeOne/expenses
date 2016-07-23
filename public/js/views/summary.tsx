@@ -1,7 +1,7 @@
 import * as React from "react"
-import FontIcon from "./fonticon"
+import FontIcon from "../components/fonticon"
 
-export default class SideBar extends React.Component<any, any> {
+export default class SummaryView extends React.Component<any, any> {
   render() {
     return (
       <aside className="full fifth-1000">
