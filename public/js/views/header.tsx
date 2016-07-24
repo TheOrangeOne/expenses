@@ -13,6 +13,9 @@ export default class HeaderView extends React.Component<any, any> {
           <Link className="pseudo button" to="/about">
             <span>about</span>
           </Link>
+          <a className="pseudo button" href="/login/facebook">
+            <span>log in</span>
+          </a>
         </div>
       </nav>
     );

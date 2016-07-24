@@ -17,7 +17,7 @@ export default class TransactionsView extends React.Component<TransactionViewPro
       <article className="full four-fifth-1000">
         <h2>transactions</h2>
           {user.transactions.map((t, i) => {
-            return <TransactionCard key={i} transaction={t}/>
+            return <TransactionCard key={i} user={user} transaction={t}/>
         })}
       </article>
     )
