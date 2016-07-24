@@ -9,7 +9,7 @@ var ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
 passport.use(new Strategy({
   clientID: process.env.CLIENT_ID,
   clientSecret: process.env.CLIENT_SECRET,
-  callbackURL: 'http://localhost:7022/login/facebook/return',
+  callbackURL: process.env.CALLBACK || 'http://localhost:7022/login/facebook/return',
   enableProof: true
   },
   function(accessToken, refreshToken, profile, cb) {
