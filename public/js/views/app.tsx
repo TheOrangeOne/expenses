@@ -18,17 +18,11 @@ export default class App extends React.Component<any, AppState> {
   }
   
   componentDidMount() {
-    fetch('/api/user')
-    .then((resp) => resp.json())
-    .then((j) => {
-      console.log(j)
-      this.setState(j)
-    })
-    .catch((err) => {console.log(err)})
+    this.getUser();
   }
   
   getUser() {
-    fetch('/api/user')
+    fetch('/api/user', { credentials: 'include' })
     .then((resp) => resp.json())
     .then((j) => {
       console.log(j)
@@ -38,12 +32,14 @@ export default class App extends React.Component<any, AppState> {
   }
 
   render() {
+    const { user } = this.state;
+    
     return (
       <div>
-        <Header/>
+        <Header user={user}/>
         <main id="content">
           <section className="flex five inner-content">
-            <SideBarView update={this.getUser}/>
+            <SideBarView/>
             {this.props.children && React.cloneElement(this.props.children, {
                 user: this.state.user
               })}

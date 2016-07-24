@@ -17,11 +17,12 @@ passport.use(new Strategy({
   }));
 
 passport.serializeUser(function(user, cb) {
+  console.log('serializing user');
   cb(null, user);
 })
 
 passport.deserializeUser(function(obj, cb) {
-  console.log(obj);
+  console.log('deserializing user');
   cb(null, obj);
 })
 
@@ -44,7 +45,10 @@ app.use(require('body-parser').urlencoded({ extended: true }));
 app.use(require('express-session')({
   secret: 'keyboard cat',
   resave: true,
-  saveUninitialized: true
+  saveUninitialized: true,
+  cookie: {
+    secure: true
+  }
 }));
 
 app.use(passport.initialize());
@@ -53,17 +57,12 @@ app.use(passport.session());
 
 app.get('/login/facebook', passport.authenticate('facebook', { session: true }));
 
-//app.get('/api/user',
-//        require('connect-ensure-login').ensureLoggedIn(),
-//        function(req, res) {
-//          console.log(req.user);
-//          res.json({ data: "test" });
-//        });
 app.get('/api/user',
-        //ensureLoggedIn(),
+        ensureLoggedIn(),
         function(req, res) {
           console.log(req.user);
-          res.json({ user: req.user || sampleData });
+          sampleData.displayName = req.user.displayName;
+          res.json({ user: sampleData });
         });
 
 app.get('/login/facebook/return',

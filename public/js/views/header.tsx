@@ -4,6 +4,14 @@ import { Link } from "react-router"
 
 export default class HeaderView extends React.Component<any, any> {
   render() {
+    const { user } = this.props;
+
+    let login = user.name == "" ?
+      <a className="pseudo button" href="/login/facebook">
+        <span>log in</span>
+      </a> :
+      <span>{user.displayName}</span>
+    
     return (
       <nav className="header">
         <Link className="brand" to="/">
@@ -13,9 +21,7 @@ export default class HeaderView extends React.Component<any, any> {
           <Link className="pseudo button" to="/about">
             <span>about</span>
           </Link>
-          <a className="pseudo button" href="/login/facebook">
-            <span>log in</span>
-          </a>
+          {login}
         </div>
       </nav>
     );
