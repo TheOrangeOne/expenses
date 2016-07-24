@@ -23,11 +23,12 @@ export default class HeaderView extends React.Component<any, any> {
     return (
       <nav className="header">
         <Link className="brand" to="/">
-          <FontIcon class="fa-usd"/><span>expenses</span>
+          <FontIcon class="fa-usd"/>
+          <span className="app-name">expenses</span>
         </Link>
         <input id="bmenu" type="checkbox" className="show"/>
         <label htmlFor="bmenu" className="burger toggle pseudo button">
-          Menu
+          <FontIcon class="fa-bars"/>
         </label>
         <div className="menu">
           <Link className="pseudo button" to="/about">
