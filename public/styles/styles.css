@@ -24,3 +24,7 @@ aside .button {
   width: 200px;
   text-align: left;
 }
+
+.displayName {
+  text-transform: lowercase;
+}

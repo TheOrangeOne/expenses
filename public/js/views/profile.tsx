@@ -6,13 +6,13 @@ import TransactionCard from "../components/transaction"
 
 export default class ProfileView extends React.Component<any, any> {
   render() {
-    const { User } = this.props
+    const { user } = this.props
 
     return (
       <article className="full four-fifth-1000">
         <h2> profile </h2>
-        <h4> User.username </h4>
-        <h4> User.displayName </h4>
+        <h4> {user.name} </h4>
+        <h4> {user.displayName} </h4>
       </article>
     );
   }

@@ -54,9 +54,6 @@ app.use(require('express-session')({
 app.use(passport.initialize());
 app.use(passport.session());
 
-
-app.get('/login/facebook', passport.authenticate('facebook', { session: true }));
-
 app.get('/api/user',
         ensureLoggedIn(),
         function(req, res) {
@@ -65,11 +62,18 @@ app.get('/api/user',
           res.json({ user: sampleData });
         });
 
+app.get('/login/facebook', passport.authenticate('facebook', { session: true }));
+
 app.get('/login/facebook/return',
   passport.authenticate('facebook', { failureRedirect: '/error' }),
   function(req, res) {
     res.redirect('/')
   });
+
+app.get('/logout', function(req, res) {
+  req.logout();
+  res.redirect('/');
+});
 
 app.get('*', function (req, res) {
   console.log(req.user);
