@@ -1,14 +1,18 @@
 import { Transaction } from "./transaction"
 
 export const DefaultUser = {
-    name: "",
-    displayName: "",
-    transactions: [] as Array<Transaction>
+  id: '0',
+  name: "",
+  displayName: "",
+  transactions: [] as Array<Transaction>,
+  contacts: [] as Array<string>
 }
 
 
 export interface User {
+  id: string;
   name: string;
   displayName: string;
-  transactions?: Transaction[];
+  transactions: Transaction[];
+  contacts: string[];
 }

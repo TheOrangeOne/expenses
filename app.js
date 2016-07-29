@@ -5,24 +5,79 @@ var cookierParser = require('cookie-parser');
 var session = require('express-session');
 var Strategy = require('passport-facebook').Strategy;
 var ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
+var MongoClient = require('mongodb').MongoClient;
+
+var db;
+
+MongoClient.connect(
+  process.env.DB,
+  (e, database) => {
+    if (e) {
+      console.log('error connecting to db!');
+      console.log(e);
+    }
+    console.log('connected to db');
+    db = database;
+})
+
 
 passport.use(new Strategy({
   clientID: process.env.CLIENT_ID,
   clientSecret: process.env.CLIENT_SECRET,
-  callbackURL: process.env.CALLBACK || 'http://localhost:7022/login/facebook/return',
+  callbackURL: 'http://'+(process.env.HOST || 'localhost:7022')+'/login/facebook/return',
   enableProof: true
   },
-  function(accessToken, refreshToken, profile, cb) {
+  (accessToken, refreshToken, profile, cb) => {
     return cb(null, profile);
   }));
 
-passport.serializeUser(function(user, cb) {
+
+passport.serializeUser((fbuser, cb) => {
   console.log('serializing user');
-  cb(null, user);
+  console.log('looking up user ' + fbuser.id);
+
+  let user = {};
+
+  db.collection('users').findOne({
+    'id': fbuser.id
+  }, (err, doc) => {
+    if (doc) {
+      console.log('user ' + fbuser.id + ' found')
+      user = doc
+      return cb(null, user)
+    } else {
+      console.log('user does not exist in db... adding')
+
+      db.collection('fb_users').save(fbuser, (e, result) => {
+        if (e) {
+          console.log(e)
+        } else {
+          console.log('user added successfully to fb_users')
+        }
+      })
+
+      user = {
+        id: fbuser.id,
+        displayName: fbuser.displayName,
+        name: "",
+        transactions: [],
+        contacts: []
+      }
+
+      db.collection('users').save(user, (e, result) => {
+        if (e) {
+          console.log(e)
+        } else {
+          console.log('user added successfully to users')
+          return cb(null, user);
+        }
+      })
+    }
+  });
 })
 
-passport.deserializeUser(function(obj, cb) {
-  console.log('deserializing user');
+passport.deserializeUser((obj, cb) => {
+  //console.log('deserializing user');
   cb(null, obj);
 })
 
@@ -54,79 +109,35 @@ app.use(require('express-session')({
 app.use(passport.initialize());
 app.use(passport.session());
 
+// return the current user object from the session
 app.get('/api/user',
-        ensureLoggedIn(),
-        function(req, res) {
-          console.log(req.user);
-          sampleData.displayName = req.user.displayName;
-          res.json({ user: sampleData });
-        });
+  ensureLoggedIn(),
+  (req, res) => {
+    res.json({ user: req.user });
+  }
+)
 
-app.get('/login/facebook', passport.authenticate('facebook', { session: true }));
+app.get('/login/facebook', passport.authenticate('facebook', {
+  session: true
+}));
 
 app.get('/login/facebook/return',
   passport.authenticate('facebook', { failureRedirect: '/error' }),
-  function(req, res) {
+  (req, res) => {
     res.redirect('/')
   });
 
-app.get('/logout', function(req, res) {
+app.get('/logout', (req, res) => {
   req.logout();
   res.redirect('/');
 });
 
-app.get('*', function (req, res) {
-  console.log(req.user);
+// redirect everything else to index so react-router can manage
+// routing
+app.get('*', (req, res) => {
   res.render('index', { user: req.user });
 });
 
-app.listen(app.get('port'), function() {
+app.listen(app.get('port'), () => {
   console.log('server started on port ' + app.get('port'));
 });
-
-
-var sampleData = {
-  name: "kyle",
-  transactions: [
-    {
-      amount: 1152,
-      from: { name: "kyle" },
-      to: { name: "burrito place" },
-      category: "food",
-      about: "got a tasty beef burrito",
-      type: "NORMAL"
-    },
-    {
-      amount: 6713,
-      from: { name: "kyle" },
-      to: { name: "Loblaws" },
-      category: "groceries",
-      about: "weekly grocery run",
-      type: "NORMAL"
-    },
-    {
-      amount: 100,
-      from: { name: "boris" },
-      to: { name: "kyle" },
-      category: "loan",
-      about: "lent me a dollar for board games night",
-      type: "LOAN"
-    },
-    {
-      amount: 1000,
-      from: { name: "kyle" },
-      to: { name: "paul" },
-      category: "loan",
-      about: "lend paul $10 for food",
-      type: "LOAN"
-    },
-    {
-      amount: 1095,
-      from: { name: "kyle" },
-      to: { name: "subway" },
-      category: "food",
-      about: "got a sub",
-      type: "NORMAL"
-    }
-  ]
-}

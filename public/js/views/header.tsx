@@ -6,20 +6,25 @@ export default class HeaderView extends React.Component<any, any> {
   render() {
     const { user } = this.props;
 
-    let profile =
+    let isNotLoggedIn = user.id == 0
+
+    let profile = isNotLoggedIn ?
+      <Link className="pseudo button" to="/profile">
+        <span className="displayName">test user</span>
+      </Link> :
       <Link className="pseudo button" to="/profile">
         <span className="displayName">{user.displayName}</span>
       </Link>
 
 
-    let login = user.name == "" ?
+    let login = isNotLoggedIn ?
       <a className="pseudo button" href="/login/facebook">
-        <span>log in</span>
+        <FontIcon class="fa-facebook-official"/><span>log in</span>
       </a> :
       <a className="pseudo button" href="/logout">
         <span>log out</span>
       </a>
-    
+
     return (
       <nav className="header">
         <Link className="brand" to="/">

@@ -14,20 +14,20 @@ export default class TransactionCard extends React.Component<TransactionCardProp
     const { user, transaction } = this.props
 
     let moneyClass = classNames({
-      'good-money': user.name == transaction.to.name,
-      'bad-money': user.name == transaction.from.name
+      'good-money': user.id == transaction.to,
+      'bad-money': user.id == transaction.from
     })
 
     let iconClass = classNames({
-      'fa-long-arrow-right': user.name == transaction.from.name,
-      'fa-long-arrow-left': user.name == transaction.to.name
+      'fa-long-arrow-right': user.id == transaction.from,
+      'fa-long-arrow-left': user.id == transaction.to
     })
 
     let labelClass = classNames('label', {
       'warning': transaction.type == TransactionType.LOAN
     })
 
-    let other = user.name == transaction.to.name ? transaction.from.name : transaction.to.name
+    let other = user.id == transaction.to ? transaction.from : transaction.to
 
     return (
       <article className="card">
@@ -43,7 +43,7 @@ export default class TransactionCard extends React.Component<TransactionCardProp
             {transaction.category}
           </span>
         </header>
-        <p>{transaction.about}</p>
+        <p>{transaction.description}</p>
         <footer>
         </footer>
       </article>

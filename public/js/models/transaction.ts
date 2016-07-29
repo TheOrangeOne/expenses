@@ -7,10 +7,10 @@ export const TransactionType = {
 
 export interface Transaction {
   amount: number;
-  from: User,
-  to: User,
-//  date: moment.Moment;
+  from: string;
+  to: string;
+  description: string;
   category: string;
-  about: string;
   type: string;
+//  date: moment.Moment;
 }

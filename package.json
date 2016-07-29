@@ -28,6 +28,7 @@
     "history": "^3.0.0",
     "isomorphic-fetch": "^2.2.1",
     "moment": "^2.14.1",
+    "mongodb": "^2.2.4",
     "morgan": "^1.6.1",
     "passport": "^0.3.2",
     "passport-facebook": "^2.1.1",
