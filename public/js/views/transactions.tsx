@@ -3,6 +3,7 @@ import * as classNames from "classnames"
 import FontIcon from "../components/fonticon"
 
 import { User } from "../models/user"
+import { Contact } from "../models/contact"
 import { Transaction } from "../models/transaction"
 import TransactionCard from "../components/transaction"
 
@@ -59,11 +60,11 @@ export default class TransactionsView extends React.Component<TransactionViewPro
             <option>to</option>
             <option>from</option>
           </select>
-          <input
-            ref="toFromText"
-            className="stack"
-            type="text"
-            placeholder="to/from"/>
+          <select placeholder="contact">
+            {user.contacts.map((c: any, i: any) => {
+              return <option>{c.name}</option>
+            })}
+          </select>
           <select ref="category" className="stack">
             <option>category 1</option>
             <option>category 2</option>
@@ -78,8 +79,8 @@ export default class TransactionsView extends React.Component<TransactionViewPro
           </button>
         </div>
         <h2>transactions</h2>
-          {user.transactions.map((t, i) => {
-            return <TransactionCard key={i} user={user} transaction={t}/>
+        {user.transactions.map((t, i) => {
+          return <TransactionCard key={i} user={user} transaction={t}/>
         })}
       </article>
     )

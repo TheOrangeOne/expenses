@@ -19,6 +19,9 @@ export default class SideBarView extends React.Component<any, any> {
         <Link className={itemClass} to="/budgets">
           <FontIcon class="fa-balance-scale"/>budgets
         </Link>
+        <Link className={itemClass} to="/contacts">
+          <FontIcon class="fa-users"/>contacts
+        </Link>
       </aside>
     );
   }
